@@ -1,3 +1,4 @@
 .vscode/
 /scrappy/mind
+/scrappy/__pycache__
 /venv
