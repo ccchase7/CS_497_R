@@ -2,16 +2,15 @@ from Requests import Requester
 from Parses import Parser
 from utils import *
 
-NUM_TITLES_TO_PROCESS = 50
+NUM_TITLES_TO_PROCESS = 15
 
 requester = Requester()
 
-dom_path_dict = {"YAHOO!News": ["div:caas-body", "p"], "Yahoo": ["div:caas-body", "p"]}
+dom_path_dict = {"YAHOO!News": ["div:caas-body", "p"], "Yahoo": ["div:caas-body", "p"], "MSN": ["article"]}
 
-queries = ["Fossil discovery reveals ancient koala relatives the size of small cats roamed Australia",
-           "Shiny vs. Dull Side of Foil: Which Should You Use?"]#, "Ancient Supervolcano in US May Hide Largest Lithium Deposit Ever Found"]
+queries = ["The Cost of Trump's Aid Freeze in the Trenches of Ukraine's War"]
 
-queries = get_Mind_Titles(NUM_TITLES_TO_PROCESS)
+#queries = get_Mind_Titles(NUM_TITLES_TO_PROCESS)
 
 queries = ["-".join(i.split()) for i in queries]
  
@@ -37,6 +36,18 @@ for url in URL:
         
         if "yahoo" in curr_news_source.lower():
             curr_news_source = "Yahoo"
+            print(f"Sending request:  {curr_url}")
+            article_dom = requester.get_request(curr_url)
+            parser = Parser(article_dom.text)
+            article_content = parser.trail_find(dom_path_dict[curr_news_source])
+
+            for ln in article_content:
+                print(f"{ln}\n")
+            
+            print("###########################################")
+
+        if "msn" in curr_news_source.lower():
+            curr_news_source = "MSN"
             print(f"Sending request:  {curr_url}")
             article_dom = requester.get_request(curr_url)
             parser = Parser(article_dom.text)
