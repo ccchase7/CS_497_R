@@ -19,4 +19,5 @@ def get_Mind_Titles(num_titles):
 
     title_list = list(df["Title"])
 
-    return title_list[45: 45 + num_titles]
+    shift = 3
+    return title_list[shift:shift + num_titles]
