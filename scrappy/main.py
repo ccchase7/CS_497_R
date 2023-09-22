@@ -1,8 +1,7 @@
-import pandas as pd
+def searchify_news_title(news_title):
+    char_replacements = [("%", "%25"), ("'", "%27"), (":", "%3A"), ("$", "%24"), ("#", "%23")]
 
-input_file = './mind/news.tsv'
+    for replacements in char_replacements:
+        news_title = news_title.replace(replacements[0], replacements[1])
 
-df = pd.read_csv(input_file, sep='\t')
-df.columns = ['News ID', 'Category', 'SubCategory','Title', 'Abstract', 'URL', 'Title Entities', 'Abstract Entites']
-
-title_list = list(df("Title"))
+    return news_title

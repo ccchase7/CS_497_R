@@ -18,6 +18,24 @@ def get_Mind_Titles(num_titles):
     df.columns = ['News ID', 'Category', 'SubCategory','Title', 'Abstract', 'URL', 'Title Entities', 'Abstract Entites']
 
     title_list = list(df["Title"])
+    print(f"{len(title_list)} titles found")
 
     shift = 3
     return title_list[shift:shift + num_titles]
+
+def searchify_news_title(news_title):
+    char_replacements = [("%", "%25"), ("'", "%27"), (":", "%3A"), ("$", "%24"), ("#", "%23"), (",", '%2C')]
+
+    for replacements in char_replacements:
+        news_title = news_title.replace(replacements[0], replacements[1])
+
+    return news_title
+
+def format_query(search_string):
+    prefix = 'https://www.bing.com/search?q="'
+    suffix = '"+news&filters=ex1%3a"ez5_18180_18223"&form=QBRE&'
+    return prefix + search_string + suffix
+
+def cls():
+    import os
+    os.system('clear')

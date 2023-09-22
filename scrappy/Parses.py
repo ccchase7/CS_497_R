@@ -36,9 +36,8 @@ class Parser:
                 else:
                     new_soop += self.find_all(search_for, soop=curr_soop)
 
+            #print([x.prettify() for x in new_soop][0])
             soop = new_soop
-
-            
 
         return soop
 
