@@ -1,7 +1,18 @@
-def searchify_news_title(news_title):
-    char_replacements = [("%", "%25"), ("'", "%27"), (":", "%3A"), ("$", "%24"), ("#", "%23")]
+from utils import *
+from Requests import Requester
+from Parses import Parser
+from bs4 import BeautifulSoup as bs
 
-    for replacements in char_replacements:
-        news_title = news_title.replace(replacements[0], replacements[1])
+requester = Requester()
+url = 'https://golfweek.usatoday.com/2019/10/27/golf-twitter-reacts-tiger-woods-82nd-victory/'
+temp_query = format_query(url)
+print(f"{temp_query}")
+search_dom = requester.get_request(temp_query)
+b = bs(search_dom.text, 'html.parser')
+results_list = b.find_all('p')
 
-    return news_title
+print(b)
+
+for p in results_list:
+    if p.string:
+        print(p.string)

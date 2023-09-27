@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup as bs
 from time import sleep
 
 NUM_TITLES_TO_PROCESS = 2500
+to_file = False
 outFile = "output.txt"
 outFolder = "outFolder"
 
@@ -33,7 +34,7 @@ with open(outFile, 'a') as f1:
 
             for concat_symb in concat_symbs:
                 temp_query = format_query(f"{concat_symb}".join(searchify_news_title(query).split()))
-    
+                print(f"{temp_query}")
                 search_dom = requester.get_request(temp_query)
                 b = bs(search_dom.text, 'html.parser')
                 results_list = b.find_all("h2")
@@ -47,15 +48,12 @@ with open(outFile, 'a') as f1:
                     valid_urls.append(curr_url)
                     #curr_news_source = extract_News_Source(first_result)
                 else:
-                    with open(f"{outFolder}/htmls/request{count}.html", "w") as f2:
-                        f2.write(b.prettify())
+                    if to_file:
+                        with open(f"{outFolder}/htmls/request{count}.html", "w") as f2:
+                            f2.write(b.prettify())
 
-                    with open(f"{outFolder}/queries.txt", "a") as f3:
-                        f3.write(f"{count}: {temp_query}\n")
-                    #f1.write(parser.soup.prettify())
-                    #f1.write("\n##############################################################\n")
-                    
-                    #print(f"No results were found.")
+                        with open(f"{outFolder}/queries.txt", "a") as f3:
+                            f3.write(f"{count}: {temp_query}\n")
 
             #sleep(.1)
         except KeyboardInterrupt:

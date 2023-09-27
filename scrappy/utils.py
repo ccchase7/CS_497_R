@@ -36,6 +36,17 @@ def format_query(search_string):
     suffix = '"+news&filters=ex1%3a"ez5_18180_18223"&form=QBRE&'
     return prefix + search_string + suffix
 
+def curl_url_to_file(url, file_name):
+    from Requests import Requester
+    from bs4 import BeautifulSoup as bs
+
+    requester = Requester()
+    search_dom = requester.get_request(url)
+    b = bs(search_dom.text, 'html.parser')
+
+    with open(file_name, "w") as f2:
+        f2.write(b.prettify())
+
 def cls():
     import os
     os.system('clear')
