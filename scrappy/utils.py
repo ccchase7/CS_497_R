@@ -47,6 +47,15 @@ def curl_url_to_file(url, file_name):
     with open(file_name, "w") as f2:
         f2.write(b.prettify())
 
+def in_date_range(date_in_question):
+    from dateutil import parser as dtparser
+
+    start_date = dtparser.parse('Oct 11, 2019')
+    end_date = dtparser.parse('Nov 23, 2019')
+    date = dtparser.parse(date_in_question)
+
+    return date > start_date and date < end_date
+
 def cls():
     import os
     os.system('clear')
