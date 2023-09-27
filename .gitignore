@@ -1,4 +1,5 @@
 .vscode/
 /scrappy/mind
 /scrappy/__pycache__
+/scrappy/outFolder
 /venv

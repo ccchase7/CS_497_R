@@ -1,11 +1,12 @@
 from Requests import Requester
 from Parses import Parser
 from utils import *
+from bs4 import BeautifulSoup as bs
 from time import sleep
 
-NUM_TITLES_TO_PROCESS = 200
-OUT_QUERIES_FILE = "all_queries.txt"
-OUT_VALID_QUERIES_FILE = "valid_queries.txt"
+NUM_TITLES_TO_PROCESS = 2500
+outFile = "output.txt"
+outFolder = "outFolder"
 
 requester = Requester()
 
@@ -16,43 +17,58 @@ dom_path_dict = {"YAHOO!News": ["div:caas-body", "p"], "Yahoo": ["div:caas-body"
 queries = get_Mind_Titles(NUM_TITLES_TO_PROCESS)
 
 # Concatenate all the words, and replace special characters.
-queries = ("-".join(searchify_news_title(i).split()) for i in queries)
+#queries = ("+".join(searchify_news_title(i).split()) for i in queries)
+concat_symbs = ["+", "-", ""]
 
 valid_urls = []
 count = 0
-for query in queries:
-    try:
-        count += 1
-        if count % 10 == 0:
-            print(f"Count: {count}")
-        query = format_query(query)
-        # Send the search request to the news site
-        #print(f"\nSending request: {query}")
-        search_dom = requester.get_request(query)
-        parser = Parser(search_dom.text)
-        #results_list = parser.trail_find(["body", "div", "ol"])
-        results_list = parser.trail_find(["li:b_algo", "h2", "a"])
+with open(outFile, 'a') as f1:
+    for query in queries:
+        try:
+            count += 1
+            if count % 10 == 0:
+                print(f"Count: {count}")
 
-        # Extract the url and news source from the first search result
-        if len(results_list) > 0:
-            first_result = results_list[0]
-            curr_url = extract_Url_From_Href(first_result)
-            #print(f"URL: {curr_url}")
-            valid_urls.append(curr_url)
-            #curr_news_source = extract_News_Source(first_result)
-        else:
+            results_list = []
+
+            for concat_symb in concat_symbs:
+                temp_query = format_query(f"{concat_symb}".join(searchify_news_title(query).split()))
+    
+                search_dom = requester.get_request(temp_query)
+                b = bs(search_dom.text, 'html.parser')
+                results_list = b.find_all("h2")
+
+                # Extract the url and news source from the first search result
+                if len(results_list) > 0:
+                    print(results_list)
+                    first_result = results_list[0]
+                    curr_url = extract_Url_From_Href(first_result)
+                    #print(f"URL: {curr_url}")
+                    valid_urls.append(curr_url)
+                    #curr_news_source = extract_News_Source(first_result)
+                else:
+                    with open(f"{outFolder}/htmls/request{count}.html", "w") as f2:
+                        f2.write(b.prettify())
+
+                    with open(f"{outFolder}/queries.txt", "a") as f3:
+                        f3.write(f"{count}: {temp_query}\n")
+                    #f1.write(parser.soup.prettify())
+                    #f1.write("\n##############################################################\n")
+                    
+                    #print(f"No results were found.")
+
+            #sleep(.1)
+        except KeyboardInterrupt:
+            exit()
+        except:
+            print(f"An exception occurred.")
             pass
-            #print(f"No results were found.")
 
-        #sleep(.1)
-    except KeyboardInterrupt:
-        exit()
-    except:
-        pass
-
-print(f"Valid Urls:")
-for ur in valid_urls:
-    print(ur)
+    print(f"Valid Urls:")
+    with open(f"{outFolder}/valid_urls.txt", "a") as f4:
+        for ur in valid_urls:
+            print(ur)
+            f4.write(f"{ur}\n")
     
     
 
