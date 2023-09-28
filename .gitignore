@@ -3,3 +3,6 @@
 /scrappy/__pycache__
 /scrappy/outFolder
 /venv
+/scrappy/query_not_found.txt
+/scrappy/search_results_output.txt
+/scrappy/valid_urls.txt
