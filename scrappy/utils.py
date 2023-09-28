@@ -20,8 +20,12 @@ def get_Mind_Titles(num_titles):
     title_list = list(df["Title"])
     print(f"{len(title_list)} titles found")
 
-    shift = 3
-    return title_list[shift:shift + num_titles]
+    shift = 0
+    if num_titles > 0 and num_titles < len(title_list):
+        return title_list[shift:shift + num_titles]
+    elif num_titles < 0:
+        print(f"Processing all {len(title_list)} titles")
+        return title_list
 
 def searchify_news_title(news_title):
     char_replacements = [("%", "%25"), ("'", "%27"), (":", "%3A"), ("$", "%24"), ("#", "%23"), (",", '%2C')]
