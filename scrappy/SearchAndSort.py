@@ -86,7 +86,7 @@ with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2:
                     break
 
         except KeyboardInterrupt:
-            print(f"Exiting...")
+            print(f"Exiting at count {count}")
             exit()
         except Exception as e:
             print(f"Trouble query: {query}")
