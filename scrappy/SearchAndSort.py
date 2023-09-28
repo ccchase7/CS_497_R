@@ -85,9 +85,9 @@ with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2, open(notFoundFile, '
 
                 if result_found: # if you got a result using "-"s, don't search using "+"s
                     break
-            
-        if not result_found:
-            f3.write(f"{query}\n")
+                
+            if not result_found:
+                f3.write(f"{query}\n")
 
         except KeyboardInterrupt:
             print(f"Exiting at count {count}")
