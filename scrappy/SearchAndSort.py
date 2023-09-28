@@ -9,6 +9,7 @@ NUM_TITLES_TO_PROCESS = -1
 to_file = False
 outFile = "search_results_output.txt"
 urlOutFile = "valid_urls.txt"
+notFoundFile = "query_not_found.txt"
 
 requester = Requester()
 
@@ -25,7 +26,7 @@ valid_urls = []
 count = 0
 print(f"Searching for Articles...")
 
-with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2:
+with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2, open(notFoundFile, 'a') as f3:
 
     for query in queries:
         try:
@@ -74,6 +75,8 @@ with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2:
                                 curr_result = SearchResult(query, temp_query, count, result_title, date[0].text, article_url)
                                 f1.write(f"{json.dumps(curr_result.__dict__)}\n")
                                 f2.write(f"{article_url}\n")
+                            else:
+                                f3.write(f"{query}\n")
 
                                 result_found = True
                                 break # if you found a result, don't keep going through the other search results
