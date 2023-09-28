@@ -75,8 +75,6 @@ with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2, open(notFoundFile, '
                                 curr_result = SearchResult(query, temp_query, count, result_title, date[0].text, article_url)
                                 f1.write(f"{json.dumps(curr_result.__dict__)}\n")
                                 f2.write(f"{article_url}\n")
-                            else:
-                                f3.write(f"{query}\n")
 
                                 result_found = True
                                 break # if you found a result, don't keep going through the other search results
@@ -87,6 +85,9 @@ with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2, open(notFoundFile, '
 
                 if result_found: # if you got a result using "-"s, don't search using "+"s
                     break
+            
+        if not result_found:
+            f3.write(f"{query}\n")
 
         except KeyboardInterrupt:
             print(f"Exiting at count {count}")
