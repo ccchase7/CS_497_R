@@ -4,6 +4,7 @@ from utils import *
 from bs4 import BeautifulSoup as bs
 import json
 from time import sleep
+from scrape_utils import *
 
 NUM_TITLES_TO_PROCESS = -1
 to_file = False
@@ -78,6 +79,8 @@ for query in queries:
                             with open(outFile, 'a') as f1, open(urlOutFile, 'a') as f2:
                                 f1.write(f"{json.dumps(curr_result.__dict__)}\n")
                                 f2.write(f"{article_url}\n")
+
+                            scrape_page(curr_result)
 
                             result_found = True
                             break # if you found a result, don't keep going through the other search results
