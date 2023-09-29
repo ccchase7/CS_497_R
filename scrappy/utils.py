@@ -25,7 +25,7 @@ def get_Mind_Titles(num_titles):
         return title_list[shift:shift + num_titles]
     elif num_titles < 0:
         print(f"Processing all {len(title_list)} titles")
-        return title_list
+        return title_list[shift:]
 
 def searchify_news_title(news_title):
     char_replacements = [("%", "%25"), ("'", "%27"), (":", "%3A"), ("$", "%24"), ("#", "%23"), (",", '%2C')]
@@ -59,6 +59,12 @@ def in_date_range(date_in_question):
     date = dtparser.parse(date_in_question)
 
     return date > start_date and date < end_date
+
+def json_to_SearchResult(json_string):
+    import json
+    from SearchResult import SearchResult
+
+    return json.loads(json_string, object_hook=lambda d: SearchResult(**d))
 
 def cls():
     import os
