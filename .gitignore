@@ -6,3 +6,6 @@
 /scrappy/query_not_found.txt
 /scrappy/search_results_output.txt
 /scrappy/valid_urls.txt
+/scrappy/results
+/scrappy/focus_queries.txt
+/scrappy/not_found_input.txt

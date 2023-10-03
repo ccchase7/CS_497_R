@@ -20,16 +20,26 @@ def get_Mind_Titles(num_titles):
     title_list = list(df["Title"])
     print(f"{len(title_list)} titles found")
 
-    shift = 0
+    shift = 25000
     if num_titles > 0 and num_titles < len(title_list):
         return title_list[shift:shift + num_titles]
     elif num_titles < 0:
         print(f"Processing all {len(title_list)} titles")
         return title_list[shift:]
 
-def searchify_news_title(news_title):
-    char_replacements = [("%", "%25"), ("'", "%27"), (":", "%3A"), ("$", "%24"), ("#", "%23"), (",", '%2C')]
+def get_Not_Found_Titles():
+    #input_file = "results\\test.txt"
+    input_file = "not_found_input.txt"
 
+    with open(input_file, "r") as inFile:
+        titles = inFile.read().splitlines()
+
+    return titles
+
+
+def searchify_news_title(news_title):
+    # char_replacements = [("%", "%25"), ("'", "%27"), ("&", "%26"), (":", "%3A"), ("$", "%24"), (";", "%3B"), ("#", "%23"), ("!", "%21"), (",", '%2C')]
+    char_replacements = [("%", "%25"), ("&", "%26"), ("\'", "%27"), ("\\", "%5C"), ("`", "%60"), ("!", "%21"), ("$", "%24"), ("(", "%28"), ("=", "%3D"), ("|", "%7C"), ("\t", "%5Ct"), (":", "%3A"), ("]", "%5D"), (",", "%2C"), ("/", "%2F"), ("?", "%3F"), ("#", "%23"), (")", "%29"), ("+", "%2B"), ("[", "%5B"), ("@", "%40"), (";", "%3B")]
     for replacements in char_replacements:
         news_title = news_title.replace(replacements[0], replacements[1])
 
@@ -37,7 +47,7 @@ def searchify_news_title(news_title):
 
 def format_query(search_string):
     prefix = 'https://www.bing.com/search?q="'
-    suffix = '"+news&filters=ex1%3a"ez5_18180_18223"&form=QBRE&'
+    suffix = '"+news&filters=ex1%3a"ez5_14530_18223"&form=QBRE&'
     return prefix + search_string + suffix
 
 def curl_url_to_file(url, file_name):
@@ -54,7 +64,7 @@ def curl_url_to_file(url, file_name):
 def in_date_range(date_in_question):
     from dateutil import parser as dtparser
 
-    start_date = dtparser.parse('Oct 11, 2019')
+    start_date = dtparser.parse('Oct 11, 2010')
     end_date = dtparser.parse('Nov 23, 2019')
     date = dtparser.parse(date_in_question)
 
